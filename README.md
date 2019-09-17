@@ -4,7 +4,7 @@ Welcome all - This is a chrome extension I'm developing to add new complementry 
 
 ## Getting Started
 
-To use the extension, downlaod it from [here](https://chrome.google.com/webstore/detail/scratch-3-developer-tools/phacniajokfchdcamjhonkbhlcipplno).
+To use the extension, download it from [here](https://chrome.google.com/webstore/detail/scratch-3-developer-tools/phacniajokfchdcamjhonkbhlcipplno).
 
 If you want to build it yourself, or see how it works, then the following instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 

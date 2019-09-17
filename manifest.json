@@ -1,0 +1,42 @@
+{
+  "manifest_version": 2,
+
+  "name": "Scratch 3 Developer Tools",
+  "short_name": "Scratch 3 Dev Tools",
+  "description": "Scratch 3 Developer Tools to enhance your Scratch Editing Experience on https://scratch.mit.edu",
+  "author": "Griffpatch",
+  "version": "0.0.2",
+  "version_name": "0.0.2",
+  "homepage_url": "http://www.griffpatch.co.uk",
+  
+  "icons": { "32": "favicon.png",
+			 "128": "bigIcon.png" },
+  
+  "browser_action": {
+    "default_icon": "favicon.png"
+  },
+  
+  "content_scripts": [
+    {
+	  "run_at": "document_idle",
+      "matches": ["https://scratch.mit.edu/projects/*"],
+      "js": ["injectSimple.js"],
+      "css": ["inject.css"],
+	  "all_frames": false
+    }
+  ],
+  
+  "permissions": [
+	"https://scratch.mit.edu/*"
+  ],
+  
+  "web_accessible_resources": [
+    "inject3.js"
+  ],
+  
+  "applications": {
+    "gecko": {
+      "id": "griffpatch@griffpatch.co.uk"
+    }
+  }
+}

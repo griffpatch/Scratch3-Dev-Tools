@@ -1,0 +1,109 @@
+/* Wrapper around find button and drop down */
+#s3devFind {
+    height: 2rem;
+    overflow: visible;
+    margin-left:3em;
+    position: relative;
+}
+
+/* Find Input Box */
+#s3devInp {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: calc(0.5rem / 2);
+    font-weight: bold;
+    padding: 0.3em;
+    z-index: 2;
+    position: relative;
+    
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Drop down from find button */
+div#s3devDDOut {
+    z-index: 100;
+    top:0;
+    left:0;
+    min-width: 100%;
+    position: absolute;
+    /*padding: 2.2em 0 0;*/
+    /*background-color: white;*/
+}
+
+/* Drop down from find button */
+ul#s3devDD {
+    display: none;
+    position: relative;
+    padding: 0.2em 0;
+    font-size: 0.8rem;
+    line-height: 1;
+    overflow-y: auto;
+    min-height: 128px;
+    max-height: 65vh;
+}
+
+div#s3devDDOut.vis {
+    box-shadow: 0 2px 3px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.1);
+    background-color: white;
+}
+
+div#s3devDDOut.vis ul#s3devDD {
+    display: block;
+}
+
+/* Drop down items */
+#s3devDD>li {
+    display: block;
+    padding: 0.5em 0.3em;
+    white-space: nowrap;
+    margin: 0;
+    font-weight: bold;
+}
+
+#s3devDD>li>b {
+    background-color: #aaffaa;
+    color: black;
+}
+
+/* Drop down items */
+#s3devDD>li:hover, #s3devDD>li.sel {
+    color: white;
+    cursor: pointer;
+}
+
+#s3devDD>li::before {
+    content: '● ';
+}
+
+.define {
+    color: rgb(255, 102, 128);
+}
+
+.flag {
+    color: #4CBF56;
+}
+
+.receive {
+    color: rgb(255, 191, 0);
+}
+
+.event {
+    color: rgb(255, 130, 0);
+}
+
+.define:hover, .define.sel {
+    background-color: rgb(255, 102, 128);
+}
+
+.flag:hover, .flag.sel {
+    background-color: #4CBF56;
+}
+
+.receive:hover, .receive.sel {
+    background-color: rgb(255, 191, 0);
+}
+
+.event:hover, .event.sel {
+    background-color: rgb(255, 130, 0);
+}
+

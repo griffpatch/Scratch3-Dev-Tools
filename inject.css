@@ -44,15 +44,18 @@ ul#s3devDD {
     min-height: 128px;
     max-height: 65vh;
     background-color: rgb(229, 240, 255);
+    border: none;
 }
 
 div#s3devDDOut.vis {
     box-shadow: 0 2px 3px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.1);
-    background-color: white;
+    background-color: rgb(229, 240, 255);
+    border: none;
 }
 
 div#s3devDDOut.vis ul#s3devDD {
     display: block;
+    border: none;
 }
 
 /* Drop down items */

@@ -14,7 +14,9 @@
     padding: 0.3em;
     z-index: 2;
     position: relative;
-    
+    border: 1px;
+    height: 30px;
+    bottom: 5px;
     min-width: 100%;
     box-sizing: border-box;
 }
@@ -26,6 +28,7 @@ div#s3devDDOut {
     left:0;
     min-width: 100%;
     position: absolute;
+    background-color: rgb(229, 240, 255);
     /*padding: 2.2em 0 0;*/
     /*background-color: white;*/
 }
@@ -40,6 +43,7 @@ ul#s3devDD {
     overflow-y: auto;
     min-height: 128px;
     max-height: 65vh;
+    background-color: rgb(229, 240, 255);
 }
 
 div#s3devDDOut.vis {

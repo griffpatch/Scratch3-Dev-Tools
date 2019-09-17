@@ -1,10 +1,10 @@
-# Project Title
+# Griffpatch's Scratch 3 Dev Tools Chrome Browser Extension
 
-Griffpatch's Scratch 3 Dev Tools Chrome Browser Extension
+Welcome all - This is a chrome extension I'm developing to add new complementry features to the awesome [Scratch](https://scratch.mit.edu) website. The source code is provided here for you to see, but you can more easily download the official extension from the [Google Chrome Webstore][https://chrome.google.com/webstore/detail/scratch-3-developer-tools/phacniajokfchdcamjhonkbhlcipplno]
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+To use the extension, downlaod it from [here][https://chrome.google.com/webstore/detail/scratch-3-developer-tools/phacniajokfchdcamjhonkbhlcipplno]. If you want to build it yourself, or see how it works, then the following instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 

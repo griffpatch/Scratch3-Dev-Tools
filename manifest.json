@@ -3,7 +3,7 @@
 
   "name": "Scratch 3 Developer Tools",
   "short_name": "Scratch 3 Dev Tools",
-  "description": "Scratch 3 Developer Tools to enhance your Scratch Editing Experience on https://scratch.mit.edu",
+  "description": "Scratch 3 Developer Tools to enhance your Scratch Editing Experience on https://scratch.mit.edu and https://llk.github.io/scratch-gui/develop",
   "author": "Griffpatch",
   "version": "0.0.2",
   "version_name": "0.0.2",
@@ -19,7 +19,7 @@
   "content_scripts": [
     {
 	  "run_at": "document_idle",
-      "matches": ["https://scratch.mit.edu/projects/*"],
+      "matches": ["https://scratch.mit.edu/projects/*", "https://llk.github.io/scratch-gui/*"],
       "js": ["injectSimple.js"],
       "css": ["inject.css"],
 	  "all_frames": false
@@ -27,7 +27,8 @@
   ],
   
   "permissions": [
-	"https://scratch.mit.edu/*"
+	"https://scratch.mit.edu/*",
+	 "https://llk.github.io/scratch-gui/*"
   ],
   
   "web_accessible_resources": [

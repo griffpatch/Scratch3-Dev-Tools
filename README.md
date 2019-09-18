@@ -25,12 +25,6 @@ Nothing really, just Google Chrome and a web browser
 5. Navigate to a scratch project at https://scratch.mit.edu/ and look inside
 6. Enjoy!
 
-or to simply use as a userscripts:
-
-1. Copy the [inject3.js](https://raw.githubusercontent.com/griffpatch/Scratch3-Dev-Tools/master/inject3.js) file to your clipboard
-2. With a project in Scratch, open the chrome developer console F12
-3. Paste the script into the console to temporarilly use the plugin.
-
 ## Versioning
 
 v0.0.2 - Fixed focus bug

@@ -6,7 +6,6 @@
   "description": "Scratch 3 Developer Tools to enhance your Scratch Editing Experience on https://scratch.mit.edu and https://llk.github.io/scratch-gui/develop",
   "author": "Griffpatch",
   "version": "0.0.2",
-  "version_name": "0.0.2",
   "homepage_url": "http://www.griffpatch.co.uk",
   
   "icons": { "32": "favicon.png",
@@ -33,11 +32,5 @@
   
   "web_accessible_resources": [
     "inject3.js"
-  ],
-  
-  "applications": {
-    "gecko": {
-      "id": "griffpatch@griffpatch.co.uk"
-    }
-  }
+  ]
 }

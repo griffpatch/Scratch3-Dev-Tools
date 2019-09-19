@@ -2,7 +2,7 @@ console.log('Griffpatch Scratch Developer Tools Extension Handler');
 
 function initGUI() {
 
-    let find, findInp, ddOut, dd, wksp;
+    let find, findInp, ddOut, dd, wksp, offsetX, offsetY;
 
     function getWorkspace() {
         let wksp2 = Blockly.getMainWorkspace();
@@ -129,6 +129,9 @@ function initGUI() {
             li.className = proc.cls;
             dd.appendChild(li);
         }
+        
+        offsetX = ddOut.getBoundingClientRect().width + find.parentNode.getBoundingClientRect().width + 20;
+        offsetY = 32;
     }
     
     function hideDropDown() {
@@ -171,7 +174,9 @@ function initGUI() {
         centerTop(li.data.labelID);
     }
 
-    /**
+    let myFlash;
+
+        /**
      * Based on wksp.centerOnBlock(li.data.labelID);
      * @param e
      */
@@ -183,18 +188,34 @@ function initGUI() {
                 eSiz = e.getHeightWidth(),
                 scale = wksp.scale,
 
-                x = (ePos.x + (wksp.RTL ? -1 : 1) * eSiz.width / 2) * scale,
+                // x = (ePos.x + (wksp.RTL ? -1 : 1) * eSiz.width / 2) * scale,
+                x = ePos.x * scale,
                 y = ePos.y * scale,
                 yh = eSiz.height * scale,
 
                 s = wksp.getMetrics(),
 
-                sx = s.contentLeft + s.viewWidth / 2 - x,
+                // sx = s.contentLeft + s.viewWidth / 2 - x,
+                sx = x - s.contentLeft - offsetX,
                 // sy = s.contentTop - y + Math.max(Math.min(32, 32 * scale), (s.viewHeight - yh) / 2);
-                sy = s.contentTop - y + Math.min(32, 32 * scale);
+                sy = y - s.contentTop - offsetY;
 
             // wksp.hideChaff(),
-            wksp.scrollbar.set(-sx, -sy);
+            wksp.scrollbar.set(sx, sy);
+
+            let count = 6;
+            let flashOn = true;
+            myFlash = e.id;
+            
+            function flash() {
+                wksp.glowBlock(e.id, flashOn);
+                flashOn = !flashOn;
+                count--;
+                if ((count > 0 && myFlash === e.id) || !flashOn) {
+                    setTimeout(flash, 200);
+                }
+            }
+            flash();
         }        
     }
 

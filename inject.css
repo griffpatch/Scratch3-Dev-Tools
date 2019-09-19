@@ -64,6 +64,7 @@ ul#s3devDD {
     min-height: 128px;
     max-height: 65vh;
     user-select: none;
+    max-width: 16em;
 }
 
 div#s3devDDOut.vis {
@@ -86,6 +87,8 @@ div#s3devDDOut.vis ul#s3devDD {
     white-space: nowrap;
     margin: 0;
     font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 #s3devDD>li>b {

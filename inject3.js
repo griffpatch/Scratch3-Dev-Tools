@@ -281,7 +281,7 @@ function initGUI() {
         }
     
         let root = tab.parentNode;
-        root.insertAdjacentHTML('beforeend', "<span id=s3devFind><div id='s3devDDOut'><input id='s3devInp' type='search' placeholder='Find (Ctrl+F)' autocomplete='off'><ul id='s3devDD'></ul></div></span>");
+        root.insertAdjacentHTML('beforeend', "<label class='title' id=s3devFindLabel><span>Find </span><span id=s3devFind><div id='s3devDDOut'><input id='s3devInp' type='search' placeholder='Find (Ctrl+F)' autocomplete='off'><ul id='s3devDD'></ul></div></span></label>");
 
         find = document.getElementById('s3devFind');
         findInp = document.getElementById('s3devInp');

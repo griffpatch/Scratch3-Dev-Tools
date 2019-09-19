@@ -1,8 +1,24 @@
+
+#s3devFindLabel {
+    display: flex;
+}
+
+#s3devFindLabel>span:first-child {
+    margin-left: 1.5em;
+    margin-right: 1em;
+    font-weight: bold;
+    font-size: 0.625rem;
+    user-select: none;
+    cursor: default;
+    white-space: nowrap;
+    padding-top: 2px;
+}
+
 /* Wrapper around find button and drop down */
 #s3devFind {
     height: 2rem;
     overflow: visible;
-    margin-left:3em;
+    /*margin-left:3em;*/
     position: relative;
 }
 
@@ -10,13 +26,16 @@
 #s3devInp {
     background: rgba(255, 255, 255, 0.5);
     border-radius: calc(0.5rem / 2);
+    font-size: .75rem;;
     font-weight: bold;
-    padding: 0.3em;
+    padding: 0.4em;
     z-index: 2;
     position: relative;
-    border: 1px;
-    height: 30px;
-    bottom: 5px;
+
+    border: 1px solid hsla(0, 0%, 0%, 0.15);
+    /*height: 30px;*/
+    /*bottom: 5px;*/
+
     min-width: 100%;
     box-sizing: border-box;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -25,13 +44,13 @@
 /* Drop down from find button */
 div#s3devDDOut {
     z-index: 100;
-    top:0;
+    top:-6px;
     left:0;
     min-width: 100%;
     position: absolute;
-    background-color: rgb(229, 240, 255);
     /*padding: 2.2em 0 0;*/
     /*background-color: white;*/
+    padding: 4px;
 }
 
 /* Drop down from find button */
@@ -39,19 +58,20 @@ ul#s3devDD {
     display: none;
     position: relative;
     padding: 0.2em 0;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     line-height: 1;
     overflow-y: auto;
     min-height: 128px;
     max-height: 65vh;
-    background-color: rgb(229, 240, 255);
-    border: none;
+    user-select: none;
 }
 
 div#s3devDDOut.vis {
-    box-shadow: none;
-    background-color: rgb(229, 240, 255);
+    /*box-shadow: 0 2px 3px rgba(0,0,0,0.3), 0 5px 8px rgba(0,0,0,0.2);*/
+    box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, .3);
+    background-color: white;
     border: none;
+    border-radius: 4px;
 }
 
 div#s3devDDOut.vis ul#s3devDD {

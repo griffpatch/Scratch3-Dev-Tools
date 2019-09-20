@@ -693,11 +693,12 @@ function initGUI() {
         });
 
         document.getElementById('s3devDeep').addEventListener('click', deepSearch);
-        document.getElementById('s3devCleanUp').addEventListener('click', function () {
+        document.getElementById('s3devCleanUp').addEventListener('click', function (e) {
             if (window.confirm('Griffpatch: Tidy up your scripts?')) {
                 doCleanUp();
             }
-            return true;
+            e.preventDefault();
+            return false;
         });
     }
     

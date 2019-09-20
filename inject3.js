@@ -270,8 +270,44 @@ function initGUI() {
             }
         }
     }
-    
+
+    function setHex() {
+        let input = document.getElementById("s3devColorPickerHexinput").value;
+        console.log(input)
+        if (input.length != 7 || input.charAt(0) != '#') {
+            document.getElementById("s3DevHexColorOutput").innerHTML = "Incorrect"
+            return
+        } else {
+            document.getElementById("s3DevHexColorOutput").innerHTML = ""
+        }
+        
+    }    
     // Loop until the DOM is ready for us...
+
+    function initColorBar() {
+        let colorBar = document.getElementsByClassName('Popover-body')[0];
+        console.log("colorBar" + colorBar)
+        if (!colorBar) {
+            setTimeout(initColorBar, 1000);
+            return;
+        } else {
+            let hexInput = document.getElementById("s3devColorPickerHexinput");
+            console.log("hexInput" + hexInput)
+            if (!hexInput) {
+                let s3devColorPickerHexinput = document.createElement("input");
+                s3devColorPickerHexinput.id = "s3devColorPickerHexinput";
+                s3devColorPickerHexinput.addEventListener("change", function() {setHex()});
+                s3devColorPickerHexinput.placeholder = "Hex Color Code";
+                let s3DevHexColorOutput = document.createElement("span");
+                s3DevHexColorOutput.id = "s3DevHexColorOutput";
+                colorBar.appendChild(s3devColorPickerHexinput);
+                colorBar.appendChild(document.createElement("br"));
+                colorBar.appendChild(s3DevHexColorOutput);
+            }
+        }
+        document.getElementsByClassName("color-button_color-button_1NNLx")[0].addEventListener("click", function () { initColorBar(); });
+        document.getElementById("react-tabs-2").addEventListener("click", function () { initColorBar(); });
+    }
     
     function initInner() {
         let tab = document.getElementById('react-tabs-0');
@@ -307,6 +343,7 @@ function initGUI() {
         })
     }
     setTimeout(initInner, 1000);
+    setTimeout(initColorBar, 1000);
 }
 
 initGUI();

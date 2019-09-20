@@ -107,3 +107,11 @@ div#s3devDDOut.vis ul#s3devDD {
     background-color: rgb(255, 130, 0);
 }
 
+#s3devColorPickerHexinput {
+    font-size: 15px;
+}
+
+#s3DevHexColorOutput {
+    color: red;
+    font-size: 13px;
+}

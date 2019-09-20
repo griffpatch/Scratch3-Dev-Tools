@@ -1,4 +1,10 @@
 
+#s3devToolBar {
+    display: flex;
+    white-space: nowrap;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 #s3devFindLabel {
     display: flex;
 }
@@ -38,7 +44,6 @@
 
     min-width: 100%;
     box-sizing: border-box;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 /* Drop down from find button */
@@ -46,8 +51,8 @@ div#s3devDDOut {
     z-index: 100;
     top:-6px;
     left:0;
-    min-width: 100%;
-    position: absolute;
+    width: 16em;
+    position: relative;
     /*padding: 2.2em 0 0;*/
     /*background-color: white;*/
     padding: 4px;
@@ -64,7 +69,7 @@ ul#s3devDD {
     min-height: 128px;
     max-height: 65vh;
     user-select: none;
-    max-width: 16em;
+    max-width: 100%;
 }
 
 div#s3devDDOut.vis {
@@ -119,7 +124,15 @@ div#s3devDDOut.vis ul#s3devDD {
 }
 
 .event {
-    color: rgb(255, 130, 0);
+    color: rgb(255, 191, 0);
+}
+
+.var, .VAR {
+    color: rgb(255, 120, 26);
+}
+
+.list, .LIST {
+    color: rgb(255, 102, 26);
 }
 
 .define:hover, .define.sel {
@@ -135,5 +148,57 @@ div#s3devDDOut.vis ul#s3devDD {
 }
 
 .event:hover, .event.sel {
-    background-color: rgb(255, 130, 0);
+    background-color: rgb(255, 191, 0);
+}
+
+.var:hover, .var.sel, .VAR:hover, .VAR.sel {
+    background-color: rgb(255, 120, 26);
+}
+
+.list:hover, .list.sel, .LIST:hover, .LIST.sel {
+    background-color: rgb(255, 102, 26);
+}
+
+#s3devOverlay {
+    position:fixed;
+    top:0;left:0;
+    right:0;bottom:0;
+    background-color: rgba(80,80,80,0.5);
+    z-index: 9999;
+    padding:10em;
+    color:white;
+    font-weight: bold;
+}
+
+#s3devMulti {
+    font-weight: normal;
+    position: absolute;
+    right: 0;
+    white-space: nowrap;
+    background-color: inherit;
+    z-index: 1;
+    padding: 0;
+}
+
+.s3devNav {
+    padding: 0 6px;
+}
+
+.s3devNav:hover {
+    color: #ffff80;
+}
+
+#s3devDeep {
+    margin-left: 1em;
+    display: none;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 2;
+}
+
+#s3devCleanUp {
+    margin-left: 1em;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 2;
 }

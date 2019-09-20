@@ -389,7 +389,7 @@ function initGUI() {
         blocks: null,
         update: function () {
             let count = document.getElementById('s3devMultiCount');
-            count.innerHTML = multi.blocks && multi.blocks.length > 0 ? enc((multi.idx + 1) + " / " + multi.blocks.length) : "0"
+            count.innerText = multi.blocks && multi.blocks.length > 0 ? enc((multi.idx + 1) + " / " + multi.blocks.length) : "0"
         },
         navLeft: function(e) { return multi.navSideways(e, -1); },
         navRight: function(e) { return multi.navSideways(e, 1); },
@@ -511,7 +511,17 @@ function initGUI() {
             let i = li.data.lower.indexOf(val);
             if (i >= 0) {
                 li.style.display = 'block';
-                li.innerHTML = enc(procCode.substring(0, i)) + '<b>' + enc(procCode.substr(i, val.length)) + "</b>" + enc(procCode.substr(i + val.length));
+                dom_removeChildren(li);
+                if (i > 0) {
+                    li.appendChild(document.createTextNode(procCode.substring(0, i)));
+                }
+                let bText = document.createElement('b');
+                bText.appendChild(document.createTextNode(procCode.substr(i, val.length)));
+                li.appendChild(bText);
+                if (i + val.length < procCode.length) {
+                    li.appendChild(document.createTextNode(procCode.substr(i + val.length)));
+                }                
+                // li.innerHTML = enc(procCode.substring(0, i)) + '<b>' + enc(procCode.substr(i, val.length)) + "</b>" + enc(procCode.substr(i + val.length));
             } else {
                 li.style.display = 'none';
             }
@@ -543,9 +553,13 @@ function initGUI() {
     function inputKeyDown(e) {
         if (e.keyCode === 38) {
             navigateFilter(-1);
+            e.preventDefault();
+            return;
         }
         if (e.keyCode === 40) {
             navigateFilter(1);
+            e.preventDefault();
+            return;
         }
         if (e.keyCode === 37) {
             let sel = dd.getElementsByClassName('sel');
@@ -566,6 +580,8 @@ function initGUI() {
                 navigateFilter(1);
             }
             document.activeElement.blur();
+            e.preventDefault();
+            return;
         }
         if (e.keyCode === 27) { // Escape
             if (findInp.value.length > 0) {
@@ -574,6 +590,8 @@ function initGUI() {
             } else {
                 document.activeElement.blur();
             }
+            e.preventDefault();
+            return;
         }
     }
 
@@ -620,7 +638,9 @@ function initGUI() {
             name = sprite.querySelector('[class*=sprite-selector-item_sprite-name]').textContent;
 
             console.log('Loading ' + name);
-            overlay.insertAdjacentHTML('beforeend', "<div>Searching in " + enc(name) + "</div>");
+            let divElement = document.createElement("div");
+            divElement.appendChild(document.createTextNode("Searching in " + name));
+            overlay.appendChild(divElement);
 
             setTimeout(nextSprite, 50);
         }

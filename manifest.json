@@ -5,7 +5,7 @@
   "description": "Scratch 3 Developer Tools to enhance your Scratch Editing Experience on https://scratch.mit.edu",
   "author": "Griffpatch",
   "version": "0.1.2",
-  "homepage_url": "http://www.griffpatch.co.uk",
+  "homepage_url": "https://www.griffpatch.co.uk",
   "icons": {
     "32": "favicon.png",
     "128": "bigIcon.png"

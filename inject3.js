@@ -23,6 +23,7 @@ function initGUI() {
         // Access Blockly!
 
         let myBlocks = [];
+        let myBlocksByProcCode = {};
 
         // todo - get blockyly from an svg???
         
@@ -30,10 +31,27 @@ function initGUI() {
         let topBlocks = wksp.getTopBlocks();
         // console.log(topBlocks);
 
+        /**
+         * @param cls
+         * @param txt
+         * @param root
+         * @returns {{clones: null, procCode: *, labelID: *, lower: *, y: number, cls: *}|*}
+         */
         function addBlock(cls, txt, root) {
-            let items = {cls: cls, procCode: txt, labelID: root.id ? root.id : root.getId ? root.getId() : null, y: 0, lower: txt.toLowerCase()};
+            let id = root.id ? root.id : root.getId ? root.getId() : null;
+            let clone = myBlocksByProcCode[txt];
+            if (clone) {
+                if (!clone.clones) {
+                    clone.clones = [];
+                }
+                clone.clones.push(id);
+                return clone;
+            }
+            let items = {cls: cls, procCode: txt, labelID: id, y: 0, lower: txt.toLowerCase(), clones:null};
             items.y = root.getRelativeToSurfaceXY ? root.getRelativeToSurfaceXY().y : null;
             myBlocks.push(items);
+            myBlocksByProcCode[txt] = items;
+            return items;
         }
 
         function getDescFromField(root) {
@@ -69,14 +87,14 @@ function initGUI() {
                     let fields = root.inputList[0];
                     let typeDesc = fields.fieldRow[0].getText();
                     let eventName = fields.fieldRow[1].getText();
-                    addBlock('receive', typeDesc + ' ' + eventName, root);
+                    addBlock('receive', typeDesc + ' ' + eventName, root).eventName = eventName;
                 } catch (e) {
                     // eat
                 }
                 continue;
             }
 
-            if (root.type.substr(0, 6) === 'event_') {
+            if (root.type.substr(0, 10) === 'event_when') {
                 addBlock('event', getDescFromField(root), root);   // "When Flag Clicked"
                 continue;
             }
@@ -304,8 +322,84 @@ function initGUI() {
         return uses;
     }
 
+    /**
+     * Find all the uses of a named procedure.
+     * @param {string} id ID of the variable to find.
+     * @return {!Array.<!Blockly.Block>} Array of block usages.
+     */
+    function getCallsToProcedureById(id) {
+        let w = getWorkspace();
+        let procBlock = w.getBlockById(id);
+        let label = procBlock.getChildren()[0];
+        let procCode = label.getProcCode();
+        
+        let uses = [procBlock]; // Definition First, then calls to it
+        let topBlocks = getTopBlocks(true);
+        for (const topBlock of topBlocks) {
+            let kids = topBlock.getDescendants();
+            for (const block of kids) {
+                if (block.type === "procedures_call") {
+                    if (block.getProcCode() === procCode) {
+                        uses.push(block);
+                    }
+                }
+            }
+        }
+        
+        return uses;
+    }
+
+    /**
+     * Find all the uses of a named procedure.
+     * @param {string} id ID of the variable to find.
+     * @return {!Array.<!Blockly.Block>} Array of block usages.
+     */
+    function getCallsToEventsByName(name) {
+        let uses = []; // Definition First, then calls to it
+        let topBlocks = getTopBlocks(true);
+        for (const topBlock of topBlocks) {
+            let kids = topBlock.getDescendants();
+            for (const block of kids) {
+                if (block.type === "event_broadcast" || block.type === "event_broadcastandwait") {
+                    if (name === block.getChildren()[0].inputList[0].fieldRow[0].getText()) {
+                        uses.push(block);
+                    }
+                }
+            }
+        }
+        
+        return uses;
+    }
+
+    function buildNavigationCarosel(nav, li, blocks) {
+        if (nav && nav.parentNode === li) {
+            // Same control... click again to go to next
+            multi.navRight();
+        } else {
+            if (nav) {
+                nav.remove();
+            }
+            li.insertAdjacentHTML('beforeend', `
+                    <span id="s3devMulti" class="s3devMulti">
+                        <span id="s3devMultiLeft" class="s3devNav">◀</span><span id="s3devMultiCount"></span><span id="s3devMultiRight" class="s3devNav">▶</span>
+                    </span>
+                `);
+            document.getElementById('s3devMultiLeft').addEventListener("click", multi.navLeft);
+            document.getElementById('s3devMultiRight').addEventListener("click", multi.navRight);
+
+            multi.idx = 0;
+            multi.blocks = blocks;
+            multi.update();
+
+            if ((blocks.length > 0)) {
+                centerTop(blocks[0]);
+            }
+        }
+    }
+
     function dropDownClick(e) {
         // console.log(e);
+        let workspace = getWorkspace();
 
         if (prevVal === null) {
             prevVal = findInp.value;   // Hack to stop filter change if not entered data into edt box, but clicked on row
@@ -349,33 +443,31 @@ function initGUI() {
             // let wksp = getWorkspace();
             // let blocks = wksp.getVariableUsesById(li.data.labelID);
             let blocks = getVariableUsesById(li.data.labelID);
+            buildNavigationCarosel(nav, li, blocks);
 
-            if (nav && nav.parentNode === li) {
-                // Same control... click again to go to next
-                multi.navRight();
-            } else {
-                if (nav) {
-                    nav.remove();
+        } else if (cls === 'define') {
+            let blocks = getCallsToProcedureById(li.data.labelID);
+            buildNavigationCarosel(nav, li, blocks);
+            
+        } else if (cls === 'receive') {
+            let blocks = [workspace.getBlockById(li.data.labelID)];
+            if (li.data.clones) {
+                for (const cloneID of li.data.clones) {
+                    blocks.push(workspace.getBlockById(cloneID))
                 }
-                li.insertAdjacentHTML('beforeend', `
-                    <span id="s3devMulti" class="s3devMulti">
-                        <span id="s3devMultiLeft" class="s3devNav">◀</span><span id="s3devMultiCount"></span><span id="s3devMultiRight" class="s3devNav">▶</span>
-                    </span>
-                `);
-                document.getElementById('s3devMultiLeft').addEventListener("click", multi.navLeft);
-                document.getElementById('s3devMultiRight').addEventListener("click", multi.navRight);
-
-                multi.idx = 0;
-                multi.blocks = blocks;
-                multi.update();
-
-                if ((blocks.length > 0)) {
-                    centerTop(blocks[0]);
-                }
-
             }
-
+            blocks = blocks.concat(getCallsToEventsByName(li.data.eventName));
+            buildNavigationCarosel(nav, li, blocks);
+            
+        } else if (li.data.clones) {
+            let blocks = [workspace.getBlockById(li.data.labelID)];
+            for (const cloneID of li.data.clones) {
+                blocks.push(workspace.getBlockById(cloneID))
+            }
+            buildNavigationCarosel(nav, li, blocks);
+            
         } else {
+            
             multi.blocks = null;
             centerTop(li.data.labelID);
             if (nav) {

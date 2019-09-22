@@ -13,7 +13,7 @@ If you want to build it yourself, or see how it works, then the following instru
 What things you need to install the software and how to install them
 
 ```
-Nothing really, just Google Chrome and a web browser
+Nothing really, just Google Chrome or Chromium
 ```
 
 ### Installing

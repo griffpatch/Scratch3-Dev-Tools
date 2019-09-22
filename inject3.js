@@ -276,12 +276,76 @@ function initGUI() {
         console.log(input)
         if (input.length != 7 || input.charAt(0) != '#') {
             document.getElementById("s3DevHexColorOutput").innerHTML = "Incorrect"
+            document.getElementById("s3DevHSLColorOutput").style.display = "none";
             return
         } else {
-            document.getElementById("s3DevHexColorOutput").innerHTML = ""
+            try {
+                let hex = hexToHSV(input);
+                document.getElementById("s3DevHSLColorOutputC").innerHTML = "Color: " + hex[0]
+                document.getElementById("s3DevHSLColorOutputS").innerHTML = "Saturation: " + hex[1]
+                document.getElementById("s3DevHSLColorOutputB").innerHTML = "Brightness: " + hex[2]
+                document.getElementById("s3DevHexColorOutput").innerHTML = ""
+                document.getElementById("s3DevHSLColorOutput").style.display = "block";
+            } catch (error) {
+                document.getElementById("s3DevHSLColorOutput").style.display = "none";
+                document.getElementById("s3DevHexColorOutput").innerHTML = "Incorrect"
+            }
         }
         
     }    
+
+    function rgb2hsv(r, g, b) {
+        var computedH = 0;
+        var computedS = 0;
+        var computedV = 0;
+
+        //remove spaces from input RGB values, convert to int
+        var r = parseInt(('' + r).replace(/\s/g, ''), 10);
+        var g = parseInt(('' + g).replace(/\s/g, ''), 10);
+        var b = parseInt(('' + b).replace(/\s/g, ''), 10);
+
+        if (r == null || g == null || b == null ||
+            isNaN(r) || isNaN(g) || isNaN(b)) {
+            alert('Please enter numeric RGB values!');
+            return;
+        }
+        if (r < 0 || g < 0 || b < 0 || r > 255 || g > 255 || b > 255) {
+            alert('RGB values must be in the range 0 to 255.');
+            return;
+        }
+        r = r / 255; g = g / 255; b = b / 255;
+        var minRGB = Math.min(r, Math.min(g, b));
+        var maxRGB = Math.max(r, Math.max(g, b));
+
+        // Black-gray-white
+        if (minRGB == maxRGB) {
+            computedV = minRGB;
+            return [0, 0, computedV];
+        }
+
+        // Colors other than black-gray-white:
+        var d = (r == minRGB) ? g - b : ((b == minRGB) ? r - g : b - r);
+        var h = (r == minRGB) ? 3 : ((b == minRGB) ? 1 : 5);
+        computedH = 60 * (h - d / (maxRGB - minRGB));
+        computedS = (maxRGB - minRGB) / maxRGB;
+        computedV = maxRGB;
+        return [computedH, Math.round(computedS * 100), Math.round(computedV * 100)];
+    }
+    function hexToRgb(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
+    function hexToHSV(hex) {
+        var rgb = hexToRgb(hex);
+        var hsv = rgb2hsv(rgb['r'], rgb['g'], rgb['b'])
+        console.log(hsv);
+        return [Math.round((hsv[0]/360)*100), hsv[1], hsv[2]];
+    }
     // Loop until the DOM is ready for us...
 
     function initColorBar() {
@@ -300,12 +364,28 @@ function initGUI() {
                 s3devColorPickerHexinput.placeholder = "Hex Color Code";
                 let s3DevHexColorOutput = document.createElement("span");
                 s3DevHexColorOutput.id = "s3DevHexColorOutput";
+                let s3DevHSLColorOutput = document.createElement("div");
+                s3DevHSLColorOutput.id = "s3DevHSLColorOutput";
+                let s3DevHSLColorOutputC = document.createElement("span");
+                s3DevHSLColorOutputC.id = "s3DevHSLColorOutputC";
+                let s3DevHSLColorOutputS = document.createElement("span");
+                s3DevHSLColorOutputS.id = "s3DevHSLColorOutputS";
+                let s3DevHSLColorOutputB = document.createElement("span");
+                s3DevHSLColorOutputB.id = "s3DevHSLColorOutputB";
+                s3DevHSLColorOutput.appendChild(s3DevHSLColorOutputC);
+                s3DevHSLColorOutput.appendChild(document.createElement("br"));
+                s3DevHSLColorOutput.appendChild(s3DevHSLColorOutputS);
+                s3DevHSLColorOutput.appendChild(document.createElement("br"));
+                s3DevHSLColorOutput.appendChild(s3DevHSLColorOutputB);
                 colorBar.appendChild(s3devColorPickerHexinput);
+                colorBar.appendChild(document.createElement("br"));
+                colorBar.appendChild(s3DevHSLColorOutput);
                 colorBar.appendChild(document.createElement("br"));
                 colorBar.appendChild(s3DevHexColorOutput);
             }
         }
-        document.getElementsByClassName("color-button_color-button_1NNLx")[0].addEventListener("click", function () { initColorBar(); });
+        document.getElementById("s3DevHSLColorOutput").style.display = "none";
+        document.querySelector('[class*=color-button_color-button_]').addEventListener("click", function () { initColorBar(); });
         document.getElementById("react-tabs-2").addEventListener("click", function () { initColorBar(); });
     }
     

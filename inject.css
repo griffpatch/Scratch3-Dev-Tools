@@ -202,3 +202,15 @@ div#s3devDDOut.vis ul#s3devDD {
     font-weight: bold;
     line-height: 2;
 }
+
+
+#s3devColorPickerHexinput {
+    font-size: 15px;
+}
+
+#s3DevHexColorOutput {
+    color: red;
+    font-size: 13px;
+.var:hover, .var.sel, .VAR:hover, .VAR.sel {
+    background-color: rgb(255, 120, 26);
+}

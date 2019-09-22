@@ -26,7 +26,7 @@ function initGUI() {
         let myBlocksByProcCode = {};
 
         // todo - get blockyly from an svg???
-        
+
         let wksp = getWorkspace();
         let topBlocks = wksp.getTopBlocks();
         // console.log(topBlocks);
@@ -108,19 +108,19 @@ function initGUI() {
         }
 
         let map = wksp.getVariableMap();
-        
+
         let vars = map.getVariablesOfType('');
         for (const row of vars) {
             addBlock((row.isLocal ? "var" : "VAR"), (row.isLocal ? "var " : "VAR ") + row.name, row);
         }
-        
+
         let lists = map.getVariablesOfType('list');
         for (const row of lists) {
             addBlock((row.isLocal ? "list" : "LIST"), (row.isLocal ? "list " : "LIST ") + row.name, row);
         }
 
         const clsOrder = {flag:0, receive:1, event:2, define:3, var:4, VAR:5, list:6, LIST:7};
-        
+
         myBlocks.sort(function (a, b) {
             let t = clsOrder[a.cls] - clsOrder[b.cls];
             if (t !== 0) {
@@ -134,7 +134,7 @@ function initGUI() {
             }
             return a.y - b.y;
         });
-        
+
         return {procs:myBlocks};
     }
 
@@ -147,13 +147,13 @@ function initGUI() {
         if (ddOut.classList.contains('vis')) {
             return;
         }
-        
+
         prevVal = null;   // Clear the previous value of the input search
-        
+
         ddOut.classList.add('vis');
         let scratchBlocks = getScratchBlocks();
         dom_removeChildren(dd);
-        
+
         let procs = scratchBlocks.procs;
         for (const proc of procs) {
             let li = document.createElement("li");
@@ -167,20 +167,20 @@ function initGUI() {
         offsetX = ddOut.getBoundingClientRect().right - label.getBoundingClientRect().left + 26;
         offsetY = 32;
     }
-    
+
     function hideDropDown() {
         clearTimeout(rhdd);
         rhdd = setTimeout(reallyHideDropDown, 250);
     }
-    
+
     function reallyHideDropDown() {
-        
+
         // Check focus of find box
         if (findInp === document.activeElement) {
             hideDropDown();
             return;
         }
-        
+
         ddOut.classList.remove('vis');
         rhdd = 0;
     }
@@ -209,12 +209,12 @@ function initGUI() {
      */
     function doCleanUp() {
         let columns = getOrderedTopBlockColumns(true);
-        let cursorX = 48; 
-        
+        let cursorX = 48;
+
         for (const column of columns) {
             let cursorY = 64;
             let maxWidth = 0;
-            
+
             for (const block of column.blocks) {
                 let xy = block.getRelativeToSurfaceXY();
                 block.moveBy(cursorX - xy.x, cursorY - xy.y);
@@ -222,7 +222,7 @@ function initGUI() {
                 cursorY += heightWidth.height + 72;
                 maxWidth = Math.max(maxWidth, heightWidth.width);
             }
-            
+
             cursorX += maxWidth + 96;
         }
     }
@@ -252,7 +252,7 @@ function initGUI() {
         let cols = [];
         const TOLERANCE = 256;
         let orphans = {x:-999999, count:0, blocks:[]};
-        
+
         for (const topBlock of topBlocks) {
             // let r = b.getBoundingRectangle();
             let position = topBlock.getRelativeToSurfaceXY();
@@ -275,24 +275,24 @@ function initGUI() {
 
             if (bestCol) {
                 // We found a column that we fitted into
-                bestCol.x = (bestCol.x * bestCol.count + position.x) / ++bestCol.count;    // re-average the columns as more items get added... 
+                bestCol.x = (bestCol.x * bestCol.count + position.x) / ++bestCol.count;    // re-average the columns as more items get added...
                 bestCol.blocks.push(topBlock);
             } else {
                 // Create a new column
                 cols.push({x:position.x,count:1,blocks:[topBlock]});
             }
         }
-        
+
         if (orphans.blocks.length > 0) {
             cols.push(orphans);
         }
-        
+
         // Sort columns, then blocks inside the columns
         cols.sort(function (a, b) {return a.x - b.x;});
         for (const col of cols) {
             col.blocks.sort(function (a, b) {return a.getRelativeToSurfaceXY().y - b.getRelativeToSurfaceXY().y;});
         }
-        
+
         return cols;
     }
 
@@ -318,7 +318,7 @@ function initGUI() {
                 }
             }
         }
-        
+
         return uses;
     }
 
@@ -332,7 +332,7 @@ function initGUI() {
         let procBlock = w.getBlockById(id);
         let label = procBlock.getChildren()[0];
         let procCode = label.getProcCode();
-        
+
         let uses = [procBlock]; // Definition First, then calls to it
         let topBlocks = getTopBlocks(true);
         for (const topBlock of topBlocks) {
@@ -345,7 +345,7 @@ function initGUI() {
                 }
             }
         }
-        
+
         return uses;
     }
 
@@ -367,7 +367,7 @@ function initGUI() {
                 }
             }
         }
-        
+
         return uses;
     }
 
@@ -404,7 +404,7 @@ function initGUI() {
         if (prevVal === null) {
             prevVal = findInp.value;   // Hack to stop filter change if not entered data into edt box, but clicked on row
         }
-        
+
         let li = e.target;
         for (;;) {
             if (!li || li === dd) {
@@ -438,7 +438,7 @@ function initGUI() {
 
         let cls = li.data.cls;
         if (cls === 'var' || cls === 'VAR' || cls === 'list' || cls === 'LIST') {
-            
+
             // Search now for all instances
             // let wksp = getWorkspace();
             // let blocks = wksp.getVariableUsesById(li.data.labelID);
@@ -448,7 +448,7 @@ function initGUI() {
         } else if (cls === 'define') {
             let blocks = getCallsToProcedureById(li.data.labelID);
             buildNavigationCarosel(nav, li, blocks);
-            
+
         } else if (cls === 'receive') {
             let blocks = [workspace.getBlockById(li.data.labelID)];
             if (li.data.clones) {
@@ -458,16 +458,16 @@ function initGUI() {
             }
             blocks = blocks.concat(getCallsToEventsByName(li.data.eventName));
             buildNavigationCarosel(nav, li, blocks);
-            
+
         } else if (li.data.clones) {
             let blocks = [workspace.getBlockById(li.data.labelID)];
             for (const cloneID of li.data.clones) {
                 blocks.push(workspace.getBlockById(cloneID))
             }
             buildNavigationCarosel(nav, li, blocks);
-            
+
         } else {
-            
+
             multi.blocks = null;
             centerTop(li.data.labelID);
             if (nav) {
@@ -498,7 +498,7 @@ function initGUI() {
             return true;
         }
     };
-    
+
     let myFlash = {block:null, timerID:null, colour:null};
     let myFlashTimer;
 
@@ -510,13 +510,13 @@ function initGUI() {
     function centerTop(e, force) {
         let wksp = getWorkspace();
         if (e = (e && e.id ? e : wksp.getBlockById(e))) {
-            
+
             let root = e.getRootBlock();
             let base = e;
             while (base.getOutputShape() && base.getSurroundParent()) {
                 base = base.getSurroundParent();
             }
-            
+
             let ePos = base.getRelativeToSurfaceXY(),   // Align with the top of the block
                 rPos = root.getRelativeToSurfaceXY(),   // Align with the left of the block 'stack'
                 eSiz = e.getHeightWidth(),
@@ -525,7 +525,7 @@ function initGUI() {
                 // x = (ePos.x + (wksp.RTL ? -1 : 1) * eSiz.width / 2) * scale,
                 x = rPos.x * scale,
                 y = ePos.y * scale,
-                
+
                 xx = e.width + x,   // Turns out they have their x & y stored locally, and they are the actual size rather than scaled or including children...
                 yy = e.height + y,
                 // xx = eSiz.width * scale + x,
@@ -537,7 +537,7 @@ function initGUI() {
 
                 // ratio = wksp.scrollbar.hScroll.ratio_;
             // w.scrollbar.hScroll.scrollViewSize_
-            
+
             if (x < s.viewLeft + offsetX - 4 || xx > s.viewLeft + s.viewWidth || y < s.viewTop + offsetY - 4 || yy > s.viewTop + s.viewHeight) {
 
                 // sx = s.contentLeft + s.viewWidth / 2 - x,
@@ -558,7 +558,7 @@ function initGUI() {
             let flashOn = true;
             myFlash.colour = e.getColour();
             myFlash.block = e;
-            
+
             function flash() {
                 // wksp.glowBlock(e.id, flashOn);
                 myFlash.block.setColour(flashOn ? "#ffff80" : myFlash.colour);
@@ -570,17 +570,17 @@ function initGUI() {
                     myFlash.timerID = 0;
                 }
             }
-            
+
             flash();
-        }        
+        }
     }
 
     function enc(str) {
         return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
-    
+
     let prevVal = '';
-    
+
     function inputChange(e) {
 
         if (!ddOut.classList.contains('vis')) {
@@ -612,7 +612,7 @@ function initGUI() {
                 li.appendChild(bText);
                 if (i + val.length < procCode.length) {
                     li.appendChild(document.createTextNode(procCode.substr(i + val.length)));
-                }                
+                }
                 // li.innerHTML = enc(procCode.substring(0, i)) + '<b>' + enc(procCode.substr(i, val.length)) + "</b>" + enc(procCode.substr(i + val.length));
             } else {
                 li.style.display = 'none';
@@ -706,7 +706,7 @@ function initGUI() {
         let sprites = document.querySelectorAll('[class*=sprite-selector_sprite_]');
         let sprite = null, name = null;
         let i = -1;
-        
+
         function nextSprite() {
             if (sprite !== null) {
                 let topBlocks;
@@ -736,7 +736,7 @@ function initGUI() {
 
             setTimeout(nextSprite, 50);
         }
-        
+
         nextSprite();
 
         // for (const sprite of sprites) {
@@ -746,18 +746,135 @@ function initGUI() {
         return true;
     }
 
+    function setHex() {
+        let input = document.getElementById("s3devColorPickerHexinput").value;
+        console.log(input)
+        if (input.length != 7 || input.charAt(0) != '#') {
+            document.getElementById("s3DevHexColorOutput").innerHTML = "Incorrect"
+            document.getElementById("s3DevHSLColorOutput").style.display = "none";
+            return
+        } else {
+            try {
+                let hex = hexToHSV(input);
+                document.getElementById("s3DevHSLColorOutputC").innerHTML = "Color: " + hex[0]
+                document.getElementById("s3DevHSLColorOutputS").innerHTML = "Saturation: " + hex[1]
+                document.getElementById("s3DevHSLColorOutputB").innerHTML = "Brightness: " + hex[2]
+                document.getElementById("s3DevHexColorOutput").innerHTML = ""
+                document.getElementById("s3DevHSLColorOutput").style.display = "block";
+            } catch (error) {
+                document.getElementById("s3DevHSLColorOutput").style.display = "none";
+                document.getElementById("s3DevHexColorOutput").innerHTML = "Incorrect"
+            }
+        }
+
+    }
+
+    function rgb2hsv(r, g, b) {
+        var computedH = 0;
+        var computedS = 0;
+        var computedV = 0;
+
+        //remove spaces from input RGB values, convert to int
+        var r = parseInt(('' + r).replace(/\s/g, ''), 10);
+        var g = parseInt(('' + g).replace(/\s/g, ''), 10);
+        var b = parseInt(('' + b).replace(/\s/g, ''), 10);
+
+        if (r == null || g == null || b == null ||
+            isNaN(r) || isNaN(g) || isNaN(b)) {
+            alert('Please enter numeric RGB values!');
+            return;
+        }
+        if (r < 0 || g < 0 || b < 0 || r > 255 || g > 255 || b > 255) {
+            alert('RGB values must be in the range 0 to 255.');
+            return;
+        }
+        r = r / 255; g = g / 255; b = b / 255;
+        var minRGB = Math.min(r, Math.min(g, b));
+        var maxRGB = Math.max(r, Math.max(g, b));
+
+        // Black-gray-white
+        if (minRGB == maxRGB) {
+            computedV = minRGB;
+            return [0, 0, computedV];
+        }
+
+        // Colors other than black-gray-white:
+        var d = (r == minRGB) ? g - b : ((b == minRGB) ? r - g : b - r);
+        var h = (r == minRGB) ? 3 : ((b == minRGB) ? 1 : 5);
+        computedH = 60 * (h - d / (maxRGB - minRGB));
+        computedS = (maxRGB - minRGB) / maxRGB;
+        computedV = maxRGB;
+        return [computedH, Math.round(computedS * 100), Math.round(computedV * 100)];
+    }
+    function hexToRgb(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
+    function hexToHSV(hex) {
+        var rgb = hexToRgb(hex);
+        var hsv = rgb2hsv(rgb['r'], rgb['g'], rgb['b'])
+        console.log(hsv);
+        return [Math.round((hsv[0]/360)*100), hsv[1], hsv[2]];
+    }
+
+    function initColorBar() {
+        let colorBar = document.getElementsByClassName('Popover-body')[0];
+        console.log("colorBar" + colorBar)
+        if (!colorBar) {
+            setTimeout(initColorBar, 1000);
+            return;
+        } else {
+            let hexInput = document.getElementById("s3devColorPickerHexinput");
+            console.log("hexInput" + hexInput)
+            if (!hexInput) {
+                let s3devColorPickerHexinput = document.createElement("input");
+                s3devColorPickerHexinput.id = "s3devColorPickerHexinput";
+                s3devColorPickerHexinput.addEventListener("change", function() {setHex()});
+                s3devColorPickerHexinput.placeholder = "Hex Color Code";
+                let s3DevHexColorOutput = document.createElement("span");
+                s3DevHexColorOutput.id = "s3DevHexColorOutput";
+                let s3DevHSLColorOutput = document.createElement("div");
+                s3DevHSLColorOutput.id = "s3DevHSLColorOutput";
+                let s3DevHSLColorOutputC = document.createElement("span");
+                s3DevHSLColorOutputC.id = "s3DevHSLColorOutputC";
+                let s3DevHSLColorOutputS = document.createElement("span");
+                s3DevHSLColorOutputS.id = "s3DevHSLColorOutputS";
+                let s3DevHSLColorOutputB = document.createElement("span");
+                s3DevHSLColorOutputB.id = "s3DevHSLColorOutputB";
+                s3DevHSLColorOutput.appendChild(s3DevHSLColorOutputC);
+                s3DevHSLColorOutput.appendChild(document.createElement("br"));
+                s3DevHSLColorOutput.appendChild(s3DevHSLColorOutputS);
+                s3DevHSLColorOutput.appendChild(document.createElement("br"));
+                s3DevHSLColorOutput.appendChild(s3DevHSLColorOutputB);
+                colorBar.appendChild(s3devColorPickerHexinput);
+                colorBar.appendChild(document.createElement("br"));
+                colorBar.appendChild(s3DevHSLColorOutput);
+                colorBar.appendChild(document.createElement("br"));
+                colorBar.appendChild(s3DevHexColorOutput);
+            }
+        }
+        document.getElementById("s3DevHSLColorOutput").style.display = "none";
+        document.querySelector('[class*=color-button_color-button_]').addEventListener("click", function () { initColorBar(); });
+        document.getElementById("react-tabs-2").addEventListener("click", function () { initColorBar(); });
+    }
+
     //
     //
     //
     // Loop until the DOM is ready for us...
-    
+
     function initInner() {
         let tab = document.getElementById('react-tabs-0');
         if (!tab) {
             setTimeout(initInner, 1000);
             return;
         }
-    
+
         let root = tab.parentNode;
         root.insertAdjacentHTML('beforeend', `
             <div id="s3devToolBar">
@@ -780,19 +897,19 @@ function initGUI() {
         //                     <span id="s3devMultiCount"></span>
         //                     <span id="s3devMultiRight" class="s3devNav">▶</span>
         //                 </span>
-        
+
         find = document.getElementById('s3devFind');
         findInp = document.getElementById('s3devInp');
         ddOut = document.getElementById('s3devDDOut');
         ddOut.addEventListener('click', dropDownClick);
         dd = document.getElementById('s3devDD');
-        
+
         find.addEventListener('mouseenter', showDropDown);
         find.addEventListener('mouseleave', hideDropDown);
         findInp.addEventListener('keyup', inputChange);
         findInp.addEventListener('keydown', inputKeyDown);
         findInp.addEventListener('focus', inputChange);
-        
+
         document.addEventListener('keydown', function (e) {
             // Override default Ctrl+F find
             if (document.URL.indexOf('editor') > 0 && e.key === 'f' && e.ctrlKey) {
@@ -813,8 +930,9 @@ function initGUI() {
             return false;
         });
     }
-    
+
     setTimeout(initInner, 1000);
+    setTimeout(initColorBar, 1000);
 }
 
 initGUI();

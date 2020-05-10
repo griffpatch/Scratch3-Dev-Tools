@@ -795,7 +795,8 @@ function initGUI() {
         
         document.addEventListener('keydown', function (e) {
             // Override default Ctrl+F find
-            if (document.URL.indexOf('editor') > 0 && e.key === 'f' && e.ctrlKey) {
+            if (document.URL.indexOf('editor') > 0 && e.key === 'f' && (e.ctrlKey || e.metaKey)) {
+                
                 findInp.focus();
                 findInp.select();
                 e.cancelBubble = true;

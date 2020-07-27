@@ -1221,9 +1221,9 @@ function initGUI() {
         return true;
     }
 
-    function doReplaceVariable(varId, newVarName) {
+    function doReplaceVariable(varId, newVarName, type) {
         let wksp = getWorkspace();
-        let v = wksp.getVariable(newVarName);
+        let v = wksp.getVariable(newVarName, type);
         if (!v) {
             alert('That variable does not exist...');
             return;
@@ -1233,8 +1233,11 @@ function initGUI() {
         let blocks = getVariableUsesById(varId);
         for (const block of blocks) {
             try {
-                // block.getInput(0).fieldRow[0].setValue(newVId);
-                block.getField("VARIABLE").setValue(newVId);
+                if (type === "") {
+                    block.getField("VARIABLE").setValue(newVId);
+                } else {
+                    block.getField("LIST").setValue(newVId);
+                }
             } catch (e) {
                 // ignore
             }
@@ -1501,7 +1504,7 @@ function initGUI() {
             let v = wksp.getVariableById(selVarID);
             let varName = window.prompt(`Griffpatch: Switch all '${v.name}' in this sprite for the variable named:`);
             if (varName) {
-                doReplaceVariable(selVarID, varName);
+                doReplaceVariable(selVarID, varName, v.type);
             }
         }, 0)
         e.preventDefault();
@@ -1696,14 +1699,11 @@ function initGUI() {
                                 `);
                             }
 
-                            // Is this a variable?
-                            if (block && (block.type === 'data_variable' ||
-                                block.type === 'data_changevariableby' ||
-                                block.type === 'data_setvariableto'))
-                            {
+                            // Is this a variable or a list?
+                            if (block && (block.getCategory() === "data" || block.getCategory() === "data-lists")) {
                                 blocklyContextMenu.insertAdjacentHTML('beforeend', `
                                 <div id="s3devReplaceAllVars" class="goog-menuitem s3dev-mi" role="menuitem" style="user-select: none; border-top: 1px solid hsla(0, 0%, 0%, 0.15);">
-                                    <div class="goog-menuitem-content" style="user-select: none;">Swap Variable in Sprite</div>
+                                    <div class="goog-menuitem-content" style="user-select: none;">Swap ${block.getCategory() === "data" ? "Variable" : "List"} in Sprite</div>
                                 </div>
                                 `);
                                 selVarID = block.getVars()[0];

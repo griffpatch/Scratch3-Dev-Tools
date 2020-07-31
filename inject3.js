@@ -1465,6 +1465,7 @@ function initGUI() {
 
         bindOnce(document, 'mousemove', eventMouseMove, true);
         bindOnce(document, 'mousedown', eventMouseDown, true);   // true to capture all mouse downs 'before' the dom events handle them
+        bindOnce(document, 'click', eventClick, true);
         bindOnce(document.getElementById('s3devDeep'), 'click', deepSearch);
         // bindOnce(document.getElementById('s3devCleanUp'),'click', clickCleanUp);
         bindOnce(document.getElementById('s3devInject'), 'click', clickInject);
@@ -1791,7 +1792,11 @@ function initGUI() {
                     }, 1);
                 }
             }
-        } else {
+        }
+    }
+
+    function eventClick(e) {
+        if (e.button === 0) {
             let chk = e.target;
             if (chk && (chk.tagName !== 'BUTTON' && chk.getAttribute && !chk.getAttribute('role'))) {
                 chk = chk.parentNode;

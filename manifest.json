@@ -29,8 +29,19 @@
       "all_frames": false
     }
   ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+
   "web_accessible_resources": [
     "inject3.js",
     "youtubeIcon.png"
+  ],
+  "permissions": [
+    "background",
+    "webRequest",
+    "*://scratch.mit.edu/",
+    "webRequestBlocking"
   ]
 }

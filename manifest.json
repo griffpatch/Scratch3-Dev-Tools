@@ -41,7 +41,8 @@
   "permissions": [
     "background",
     "webRequest",
+    "webRequestBlocking",
     "*://scratch.mit.edu/",
-    "webRequestBlocking"
+    "*://raw.githubusercontent.com/"
   ]
 }

@@ -1,16 +1,18 @@
-const file_url = 'https://joeclinton1.github.io/Scratch3-Dev-Tools/projects.bundle.js'
-
 chrome.webRequest.onBeforeRequest.addListener(
     function(details) {
-        if( details.url == "https://scratch.mit.edu/js/projects.bundle.js" )
-            return {
-                redirectUrl: file_url,
-            };
+        if( details.url == "https://scratch.mit.edu/js/projects.bundle.js" ){
+            return {cancel: true};
+        }else{
+            return{};
+        }
     },      
     {urls: ["*://scratch.mit.edu/*.js"]},
     ["blocking"]
 );
 
+/*
+const file_url = 'https://joeclinton1.github.io/Scratch3-Dev-Tools/projects.bundle.js';
+//Listener which allows for cross-origin sharing. 
 chrome.webRequest.onHeadersReceived.addListener(
     function(details) {
         if( details.url == file_url)
@@ -24,6 +26,7 @@ chrome.webRequest.onHeadersReceived.addListener(
                 responseHeaders
             };
     },      
-    {urls: ["*://joeclinton1.github.io/*.js"]},
+    {urls: ["*://<domain here>/*.js"]},
     ['blocking','responseHeaders', 'extraHeaders']
 );
+*/

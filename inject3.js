@@ -1697,7 +1697,7 @@ function initGUI() {
                                         <div class="goog-menuitem-content" style="user-select: none;">Cut Block</div>
                                     </div>
                                     <div id="s3devTimeBlock" class="goog-menuitem s3dev-mi" role="menuitem" style="user-select: none; border-top: 1px solid hsla(0, 0%, 0%, 0.15);">
-                                        <div class="goog-menuitem-content" style="user-select: none;">Time block</div>
+                                        <div class="goog-menuitem-content" style="user-select: none;">Time this stack</div>
                                     </div>
 
                                 `);
@@ -1739,7 +1739,7 @@ function initGUI() {
 
                         copyDiv = blocklyContextMenu.querySelector("div#s3devTimeBlock");
                         if (copyDiv) {
-                            copyDiv.addEventListener("click", function(e) { timeBlock(e)} );
+                            copyDiv.addEventListener("click", function() { timeStack(dataId)} );
                         }
 
                         copyDiv = blocklyContextMenu.querySelector("div#s3devReplaceAllVars");
@@ -2311,6 +2311,28 @@ function initGUI() {
         }
         p.append(dd);
     }
+
+    function timeStack(topBlockId){
+        var timeElapsed = 0
+        var thread;
+        const STATUS_DONE = 4;
+        var threadEnded = false
+        Runtime.enableProfiling((frame)=>{
+            if(frame.id == 0 && thread.status != STATUS_DONE){
+                timeElapsed += frame.totalTime
+            }
+            if(thread.status == STATUS_DONE && !threadEnded){
+                Runtime.disableProfiling();
+                console.log(timeElapsed/0.75); // time must be divided by 0.75
+                threadEnded = true;
+            }
+        })
+        var opts = {
+            stackClick: true, 
+            target: Runtime._editingTarget
+        }
+        thread = Runtime._pushThread(topBlockId, opts.target, opts);
+    }   
 
     setTimeout(initInner, 1000);
 

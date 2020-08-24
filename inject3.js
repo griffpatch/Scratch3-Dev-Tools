@@ -1696,10 +1696,6 @@ function initGUI() {
                                     <div id="s3devCutBlock" class="goog-menuitem s3dev-mi" role="menuitem" style="user-select: none;">
                                         <div class="goog-menuitem-content" style="user-select: none;">Cut Block</div>
                                     </div>
-                                    <div id="s3devTimeBlock" class="goog-menuitem s3dev-mi" role="menuitem" style="user-select: none; border-top: 1px solid hsla(0, 0%, 0%, 0.15);">
-                                        <div class="goog-menuitem-content" style="user-select: none;">Time this stack</div>
-                                    </div>
-
                                 `);
                             }
 
@@ -1736,12 +1732,6 @@ function initGUI() {
                         if (copyDiv) {
                             copyDiv.addEventListener("click", function(e) { eventCopyClick(e, 2); } );
                         }
-
-                        copyDiv = blocklyContextMenu.querySelector("div#s3devTimeBlock");
-                        if (copyDiv) {
-                            copyDiv.addEventListener("click", function() { timeStack(dataId)} );
-                        }
-
                         copyDiv = blocklyContextMenu.querySelector("div#s3devReplaceAllVars");
                         if (copyDiv) {
                             copyDiv.addEventListener("click", clickReplace);
@@ -1965,7 +1955,7 @@ function initGUI() {
                 e.preventDefault();
                 return;
 
-                // data_variable1
+                // data_variable
                 // block.getVars()[0].id
 
                 // block.inputList[0].fieldRow[0].getText()
@@ -2311,28 +2301,6 @@ function initGUI() {
         }
         p.append(dd);
     }
-
-    function timeStack(topBlockId){
-        var timeElapsed = 0
-        var thread;
-        const STATUS_DONE = 4;
-        var threadEnded = false
-        Runtime.enableProfiling((frame)=>{
-            if(frame.id == 0 && thread.status != STATUS_DONE){
-                timeElapsed += frame.totalTime
-            }
-            if(thread.status == STATUS_DONE && !threadEnded){
-                Runtime.disableProfiling();
-                console.log(timeElapsed/0.75); // time must be divided by 0.75
-                threadEnded = true;
-            }
-        })
-        var opts = {
-            stackClick: true, 
-            target: Runtime._editingTarget
-        }
-        thread = Runtime._pushThread(topBlockId, opts.target, opts);
-    }   
 
     setTimeout(initInner, 1000);
 
